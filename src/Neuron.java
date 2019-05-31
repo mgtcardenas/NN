@@ -1,9 +1,9 @@
 public class Neuron
 {
 	private double[]	weights;
-	private double		bias;
-	private double		delta;
+	public double		bias;
 	private double		output;
+	public double		delta;
 	
 	private double random()
 	{
@@ -21,8 +21,18 @@ public class Neuron
 			i++;
 		}// end while
 		
-		this.bias = 0;
+		this.bias = random();
 	}// end Neuron - constructor
+	
+	public double getDelta()
+	{
+		return delta;
+	}// end getDelta
+
+	public double getOutput()
+	{
+		return output;
+	}// end getOutput
 	
 	public double[] getWeights()
 	{
@@ -39,6 +49,11 @@ public class Neuron
 		return 1 / (1 + Math.exp(-x));
 	}// end activationFunction
 	
+	public static double activationFunctionDerivative(double x)
+	{
+		return x * (1 - x);
+	}// end activationFunctionDerivative
+	
 	public double evaluate(double[] inputUnits)
 	{
 		this.output = 0;
@@ -50,7 +65,7 @@ public class Neuron
 			i++;
 		}// end while
 		
-		this.output = activationFunction(output) + bias;
+		this.output = activationFunction(output + bias);
 		
 		return this.output;
 	}// end evaluate

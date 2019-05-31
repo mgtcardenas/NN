@@ -1,57 +1,78 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main
 {
-	private static final int	SIZE		= 3;
-	private static double[]		inputUnits	= new double[] { 1, 1 };
-	private static double[]		outputUnits	= new double[2];
-	private static Layer		firstLayer	= new Layer(2, 3);
-	private static Layer		secondLayer	= new Layer(3, 1);
+	private static double[]	output		= new double[1];
+	private static Layer	firstLayer	= new Layer(2, 7);
+	private static Layer	secondLayer	= new Layer(7, 1);
+	static List<double[]>	inputs		= new ArrayList<>();
+	static List<double[]>	targets		= new ArrayList<>();
 	
 	public static void main(String[] args)
 	{
-		setWeights();
-		testForward();
+		int i = 0;
+		while (i < 5000)
+		{
+//			System.out.println("LOOP " + i);
+			testBackward();
+			i++;
+		}// end while
+		
+		i = 0;
+		while (i < inputs.size())
+		{
+			System.out.print("Input ");
+			int j = 0;
+			while (j < inputs.get(i).length)
+			{
+				System.out.print(inputs.get(i)[j] + " ");
+				j++;
+			}// end while
+			
+			output = secondLayer.forward(firstLayer.forward(inputs.get(i)));
+			
+			System.out.print("Output ");
+			j = 0;
+			while (j < output.length)
+			{
+				System.out.print(output[j]);
+				j++;
+			}// end while
+			
+			System.out.println();
+			i++;
+		}// end while
+		
 	}// end main
 	
-	private static void test()
+	private static void testBackward()
 	{
-		double[]	inputUnits	= new double[] { 5, 7, 9 };
-		Neuron		n			= new Neuron(3);
+		double MSE = 0;
 		
-		System.out.println(n.evaluate(inputUnits));
-	}// end test
-	
-	private static void setWeights()
-	{
-		firstLayer.getNeurons()[0].setWeights(new double[] { 0.712, 0.112 });
-		firstLayer.getNeurons()[1].setWeights(new double[] { 0.355, 0.855 });
-		firstLayer.getNeurons()[2].setWeights(new double[] { 0.268, 0.468 });
+		inputs.add(new double[] { 0, 0 });
+		inputs.add(new double[] { 1, 1 });
+		inputs.add(new double[] { 0, 1 });
+		inputs.add(new double[] { 1, 0 });
 		
-		secondLayer.getNeurons()[0].setWeights(new double[] { 0.116, 0.329, 0.708 });
-	}// end setWeights
-	
-	private static void testForward()
-	{
-		double[] firstLayerOutput = firstLayer.forward(inputUnits);
+		targets.add(new double[] { 1 });
+		targets.add(new double[] { 1 });
+		targets.add(new double[] { 0 });
+		targets.add(new double[] { 0 });
 		
-		outputUnits = secondLayer.forward(firstLayerOutput);
+		int i = 0;
+		while (i < inputs.size())
+		{
+			output	= secondLayer.forward(firstLayer.forward(inputs.get(i)));
+			MSE		+= secondLayer.costFunction(targets.get(i));
+			firstLayer.computeDeltaError(secondLayer);
+			
+			firstLayer.adjustWeights(0.1);
+			secondLayer.adjustWeights(0.1);
+			
+			i++;
+		}// end while
 		
-		for (int i = 0; i < outputUnits.length; i++)
-			System.out.println("Output unit " + i + ": " + outputUnits[i]);
-	}// end testForward
-	
-	private static void randomTest()
-	{
-		double[]	inputUnits	= new double[SIZE];
-		double[]	outputUnits	= new double[10];
-		
-		for (int i = 0; i < SIZE; i++)
-			inputUnits[i] = Math.random();
-		
-		Layer sl = new Layer(10, SIZE);
-		
-		outputUnits = sl.forward(inputUnits);
-		
-		for (int i = 0; i < outputUnits.length; i++)
-			System.out.println("Output unit " + i + ": " + outputUnits[i]);
-	}// end randomTest
+//		System.out.println("El error fue " + MSE / inputs.size() * 100);
+	}// end testBackward
 }// end Main - class

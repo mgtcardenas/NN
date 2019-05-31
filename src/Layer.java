@@ -1,6 +1,7 @@
 public class Layer
 {
-	private Neuron[] neurons;
+	private Neuron[]	neurons;
+	public double[]		input;
 	
 	public Layer(int numWeights, int numNeurons)
 	{
@@ -21,6 +22,8 @@ public class Layer
 	
 	public double[] forward(double[] inputUnits)
 	{
+		input = inputUnits;
+		
 		double[]	outputUnits	= new double[neurons.length];
 		int			i			= 0;
 		while (i < neurons.length)
@@ -33,30 +36,76 @@ public class Layer
 	}// end forward
 	
 	/**
-	 * Calculate and return the general error (not the MSE = Mean Square Error)
+	 * Calculate and return the general error (delta)
 	 * which is just the difference between the output and the desired output
-	 * times the derivative of the activation function,
+	 * times the derivative of the activation function.
+	 * Finally, return the MSE (Mean Square Error)
 	 * 
-	 * @param  desiredValue
-	 * @return
+	 * @param  desiredOutput - what we wanted to obtain
+	 * @return El Mean Square Error
 	 */
-	public double costFunction(double[] desiredValue)
+	public double costFunction(double[] desiredOutput)
 	{
-		return 0L;
+		double	error;
+		double	MSE;
+		
+		MSE = 0;
+		
+		int i = 0;
+		while (i < desiredOutput.length)
+		{
+			error				= neurons[i].getOutput() - desiredOutput[i];
+			neurons[i].delta	= error * Neuron.activationFunctionDerivative(neurons[i].getOutput());
+			MSE					+= error * error * 0.5;
+			i++;
+		}// end while
+		
+		return MSE;
 	}// end costFunction
 	
-	public void computeDeltaError(Layer aLayer)
+	/**
+	 * Calculates the general error (delta) for all the layers using the nextLayers after them
+	 * @param nextLayer - the layer after this one
+	 */
+	public void computeDeltaError(Layer nextLayer)
 	{
-		
+		int l1 = 0;
+		while (l1 < this.neurons.length)
+		{
+			int l2 = 0;
+			while (l2 < nextLayer.getNeurons().length)
+			{
+				neurons[l1].delta += nextLayer.getNeurons()[l2].getWeights()[l1] * nextLayer.getNeurons()[l2].getDelta();
+				l2++;
+			}// end while - j
+			
+			neurons[l1].delta *= Neuron.activationFunctionDerivative(neurons[l1].getOutput());
+			l1++;
+		}// end while - i
 	}// end computeDeltaError
 	
 	/**
+	 * Adjust the weights of the whole neural network
 	 * Lambda is a value between 0 and 1
-	 * 
-	 * @param lambda
+	 *
+	 * @param lambda - a hyperparameter which dictates how big the adjustments are
 	 */
 	public void adjustWeights(double lambda)
 	{
-		
+		int i = 0;
+		while (i < neurons.length)
+		{
+			neurons[i].bias -= neurons[i].delta * lambda;
+			
+			int j = 0;
+			while (j < neurons[i].getWeights().length)
+			{
+				neurons[i].getWeights()[j] -= neurons[i].delta * lambda * input[j];
+				j++;
+			}// end while - j
+			
+			neurons[i].delta = 0;
+			i++;
+		}// end while - i
 	}// end adjustWeights
 }// end Layer - class
