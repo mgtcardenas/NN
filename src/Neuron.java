@@ -14,8 +14,12 @@ public class Neuron
 	{
 		this.weights = new double[numOfWeights];
 		
-		for (int i = 0; i < numOfWeights; i++)
+		int i = 0;
+		while (i < numOfWeights)
+		{
 			this.weights[i] = random();
+			i++;
+		}// end while
 		
 		this.bias = 0;
 	}// end Neuron - constructor
@@ -39,8 +43,12 @@ public class Neuron
 	{
 		this.output = 0;
 		
-		for (int i = 0; i < inputUnits.length; i++)
+		int i = 0;
+		while (i < inputUnits.length)
+		{
 			output += inputUnits[i] * weights[i];
+			i++;
+		}// end while
 		
 		this.output = activationFunction(output) + bias;
 		
