@@ -14,7 +14,7 @@ public class Main
 		int i = 0;
 		while (i < 5000)
 		{
-//			System.out.println("LOOP " + i);
+			System.out.println("LOOP " + i);
 			testBackward();
 			i++;
 		}// end while
@@ -43,7 +43,6 @@ public class Main
 			System.out.println();
 			i++;
 		}// end while
-		
 	}// end main
 	
 	private static void testBackward()
@@ -73,6 +72,6 @@ public class Main
 			i++;
 		}// end while
 		
-//		System.out.println("El error fue " + MSE / inputs.size() * 100);
+		System.out.println("El error fue " + MSE / inputs.size() * 100);
 	}// end testBackward
 }// end Main - class

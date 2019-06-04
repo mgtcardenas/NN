@@ -1,7 +1,7 @@
 public class Layer
 {
-	private Neuron[]	neurons;
-	public double[]		input;
+	Neuron[]	neurons;
+	double[]	input;
 	
 	public Layer(int numWeights, int numNeurons)
 	{
@@ -14,11 +14,6 @@ public class Layer
 			i++;
 		}// end while
 	}// end Layer - constructor
-	
-	public Neuron[] getNeurons()
-	{
-		return neurons;
-	}// end getNeurons
 	
 	public double[] forward(double[] inputUnits)
 	{
@@ -42,7 +37,7 @@ public class Layer
 	 * Finally, return the MSE (Mean Square Error)
 	 * 
 	 * @param  desiredOutput - what we wanted to obtain
-	 * @return El Mean Square Error
+	 * @return               El Mean Square Error
 	 */
 	public double costFunction(double[] desiredOutput)
 	{
@@ -54,8 +49,8 @@ public class Layer
 		int i = 0;
 		while (i < desiredOutput.length)
 		{
-			error				= neurons[i].getOutput() - desiredOutput[i];
-			neurons[i].delta	= error * Neuron.activationFunctionDerivative(neurons[i].getOutput());
+			error				= neurons[i].output - desiredOutput[i];
+			neurons[i].delta	= error * Neuron.activationFunctionDerivative(neurons[i].output);
 			MSE					+= error * error * 0.5;
 			i++;
 		}// end while
@@ -65,6 +60,7 @@ public class Layer
 	
 	/**
 	 * Calculates the general error (delta) for all the layers using the nextLayers after them
+	 * 
 	 * @param nextLayer - the layer after this one
 	 */
 	public void computeDeltaError(Layer nextLayer)
@@ -73,13 +69,13 @@ public class Layer
 		while (l1 < this.neurons.length)
 		{
 			int l2 = 0;
-			while (l2 < nextLayer.getNeurons().length)
+			while (l2 < nextLayer.neurons.length)
 			{
-				neurons[l1].delta += nextLayer.getNeurons()[l2].getWeights()[l1] * nextLayer.getNeurons()[l2].getDelta();
+				neurons[l1].delta += nextLayer.neurons[l2].weights[l1] * nextLayer.neurons[l2].delta;
 				l2++;
 			}// end while - j
 			
-			neurons[l1].delta *= Neuron.activationFunctionDerivative(neurons[l1].getOutput());
+			neurons[l1].delta *= Neuron.activationFunctionDerivative(neurons[l1].output);
 			l1++;
 		}// end while - i
 	}// end computeDeltaError
@@ -98,9 +94,9 @@ public class Layer
 			neurons[i].bias -= neurons[i].delta * lambda;
 			
 			int j = 0;
-			while (j < neurons[i].getWeights().length)
+			while (j < neurons[i].weights.length)
 			{
-				neurons[i].getWeights()[j] -= neurons[i].delta * lambda * input[j];
+				neurons[i].weights[j] -= neurons[i].delta * lambda * input[j];
 				j++;
 			}// end while - j
 			

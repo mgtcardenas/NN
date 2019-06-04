@@ -1,9 +1,9 @@
 public class Neuron
 {
-	private double[]	weights;
-	public double		bias;
-	private double		output;
-	public double		delta;
+	double[]	weights;
+	double		bias;
+	double		output;
+	double		delta;
 	
 	private double random()
 	{
@@ -23,26 +23,6 @@ public class Neuron
 		
 		this.bias = random();
 	}// end Neuron - constructor
-	
-	public double getDelta()
-	{
-		return delta;
-	}// end getDelta
-
-	public double getOutput()
-	{
-		return output;
-	}// end getOutput
-	
-	public double[] getWeights()
-	{
-		return weights;
-	}// end getWeights
-	
-	public void setWeights(double[] weights)
-	{
-		this.weights = weights;
-	}// end setWeights
 	
 	private double activationFunction(double x)
 	{
