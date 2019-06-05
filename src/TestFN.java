@@ -23,7 +23,7 @@ public class TestFN
 				break;
 		}// end switch f
 		
-		System.out.println(myFun.activate(-5));
+		System.out.println(myFun.activate(100));
 		System.out.println(myFun.derive(5));
 	}// end mai
 }// end TestFN - class

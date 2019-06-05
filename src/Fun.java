@@ -3,7 +3,7 @@ public interface Fun
 	double activate(double x);
 	
 	double derive(double x);
-}// end Fun - class
+}// end Fun - interface
 
 enum ActFun
 {
@@ -23,7 +23,7 @@ class Sigmoid implements Fun
 	{
 		return x * (1 - x);
 	}// end derive
-}// end Sigmoid
+}// end Sigmoid - class
 
 class Relu implements Fun
 {
@@ -38,7 +38,7 @@ class Relu implements Fun
 	{
 		return x > 0 ? 1 : 0;
 	}// end derive
-}// end Relu
+}// end Relu - class
 
 class HTan implements Fun
 {
@@ -53,4 +53,19 @@ class HTan implements Fun
 	{
 		return 1 - activate(x) * activate(x);
 	}// end derive
-}// end HTan
+}// end HTan - class
+
+class Lineal implements Fun
+{
+	@Override
+	public double activate(double x)
+	{
+		return 0.1 * x;
+	}// end activate
+	
+	@Override
+	public double derive(double x)
+	{
+		return 0.1;
+	}// end derive
+}// end Lineal - class
