@@ -24,6 +24,6 @@ public class Test
 		}// end switch f
 		
 		System.out.println(myFun.activate(-5));
-		System.out.println(myFun.derivate(5));
+		System.out.println(myFun.derive(5));
 	}// end mai
 }// end Test - class

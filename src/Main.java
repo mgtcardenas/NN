@@ -4,8 +4,8 @@ import java.util.List;
 public class Main
 {
 	private static double[]	output		= new double[1];
-	private static Layer	firstLayer	= new Layer(2, 7);
-	private static Layer	secondLayer	= new Layer(7, 1);
+	private static Layer	firstLayer	= new Layer(2, 7, new Sigmoid());
+	private static Layer	secondLayer	= new Layer(7, 1, new Sigmoid());
 	static List<double[]>	inputs		= new ArrayList<>();
 	static List<double[]>	targets		= new ArrayList<>();
 	

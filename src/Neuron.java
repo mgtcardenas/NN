@@ -4,15 +4,18 @@ public class Neuron
 	double		bias;
 	double		output;
 	double		delta;
+	Fun			function;
 	
 	private double random()
 	{
 		return Math.sqrt(-2.00001 * Math.log10(1 - Math.random())) * Math.cos(2.00001 * Math.PI * Math.random());
 	}// end random
 	
-	public Neuron(int numOfWeights)
+	public Neuron(int numOfWeights, Fun function)
 	{
-		this.weights = new double[numOfWeights];
+		this.weights	= new double[numOfWeights];
+		this.bias		= random();
+		this.function	= function;
 		
 		int i = 0;
 		while (i < numOfWeights)
@@ -20,19 +23,17 @@ public class Neuron
 			this.weights[i] = random();
 			i++;
 		}// end while
-		
-		this.bias = random();
 	}// end Neuron - constructor
 	
-	private double activationFunction(double x)
+	private double activate(double x)
 	{
-		return 1 / (1 + Math.exp(-x));
-	}// end activationFunction
+		return function.activate(x);
+	}// end activate
 	
-	public static double activationFunctionDerivative(double x)
+	public double derive(double x)
 	{
-		return x * (1 - x);
-	}// end activationFunctionDerivative
+		return function.derive(x);
+	}// end derive
 	
 	public double evaluate(double[] inputUnits)
 	{
@@ -45,7 +46,7 @@ public class Neuron
 			i++;
 		}// end while
 		
-		this.output = activationFunction(output + bias);
+		this.output = activate(output + bias);
 		
 		return this.output;
 	}// end evaluate

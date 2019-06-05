@@ -2,7 +2,7 @@ public interface Fun
 {
 	double activate(double x);
 	
-	double derivate(double x);
+	double derive(double x);
 }// end Fun - class
 
 enum ActFun
@@ -19,10 +19,10 @@ class Sigmoid implements Fun
 	}// end activate
 	
 	@Override
-	public double derivate(double x)
+	public double derive(double x)
 	{
 		return x * (1 - x);
-	}// end derivate
+	}// end derive
 }// end Sigmoid
 
 class Relu implements Fun
@@ -34,10 +34,10 @@ class Relu implements Fun
 	}// end activate
 	
 	@Override
-	public double derivate(double x)
+	public double derive(double x)
 	{
 		return x > 0 ? 1 : 0;
-	}// end derivate
+	}// end derive
 }// end Relu
 
 class HTan implements Fun
@@ -49,8 +49,8 @@ class HTan implements Fun
 	}// end activate
 	
 	@Override
-	public double derivate(double x)
+	public double derive(double x)
 	{
 		return 1 - activate(x) * activate(x);
-	}// end derivate
+	}// end derive
 }// end HTan

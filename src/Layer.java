@@ -3,14 +3,14 @@ public class Layer
 	Neuron[]	neurons;
 	double[]	input;
 	
-	public Layer(int numWeights, int numNeurons)
+	public Layer(int numWeights, int numNeurons, Fun function)
 	{
 		this.neurons = new Neuron[numNeurons];
 		
 		int i = 0;
 		while (i < numNeurons)
 		{
-			this.neurons[i] = new Neuron(numWeights);
+			this.neurons[i] = new Neuron(numWeights, function);
 			i++;
 		}// end while
 	}// end Layer - constructor
@@ -50,7 +50,7 @@ public class Layer
 		while (i < desiredOutput.length)
 		{
 			error				= neurons[i].output - desiredOutput[i];
-			neurons[i].delta	= error * Neuron.activationFunctionDerivative(neurons[i].output);
+			neurons[i].delta	= error * neurons[i].derive(neurons[i].output);
 			MSE					+= error * error * 0.5;
 			i++;
 		}// end while
@@ -75,7 +75,7 @@ public class Layer
 				l2++;
 			}// end while - j
 			
-			neurons[l1].delta *= Neuron.activationFunctionDerivative(neurons[l1].output);
+			neurons[l1].delta *= neurons[l1].derive(neurons[l1].output);
 			l1++;
 		}// end while - i
 	}// end computeDeltaError
