@@ -1,4 +1,4 @@
-public class Test
+public class TestFN
 {
 	public static void main(String[] args)
 	{
@@ -26,4 +26,4 @@ public class Test
 		System.out.println(myFun.activate(-5));
 		System.out.println(myFun.derive(5));
 	}// end mai
-}// end Test - class
+}// end TestFN - class
