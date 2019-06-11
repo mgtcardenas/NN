@@ -45,13 +45,18 @@ class HTan implements Fun
 	@Override
 	public double activate(double x)
 	{
-		return (Math.exp(x) - Math.exp(-x)) / (Math.exp(x) + Math.exp(-x));
+		double a, b;
+		
+		a	= Math.exp(x);
+		b	= Math.exp(-x);
+		
+		return (a - b) / (a + b);
 	}// end activate
 	
 	@Override
 	public double derive(double x)
 	{
-		return 1 - activate(x) * activate(x);
+		return 1 - (activate(x) * activate(x));
 	}// end derive
 }// end HTan - class
 
