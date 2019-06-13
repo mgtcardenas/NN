@@ -26,10 +26,8 @@ public class Xor
 		i = 0;
 		while (i < inputs.size())
 		{
-			System.out.print("Input \t - ");
-			Aid.printHorizontal(inputs.get(i));
-			System.out.print("Output \t - ");
-			Aid.printHorizontal(runner.forward(inputs.get(i)));
+			System.out.println("Input \t - " + Aid.getStringHorizontal(inputs.get(i)));
+			System.out.println("Output \t - " + Aid.getStringHorizontal(runner.forward(inputs.get(i))));
 			i++;
 		}// end while
 	}// end main

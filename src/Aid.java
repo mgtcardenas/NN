@@ -8,7 +8,20 @@ public abstract class Aid
 		{
 			System.out.print(vector[i] + (i == vector.length - 1 ? "" : ", "));
 			i++;
-		}// end while
+		}// end while - i
 		System.out.println(" ]");
 	}// end printHorizontal
+	
+	public static String getStringHorizontal(float[] vector)
+	{
+		String	s	= "[ ";
+		int		i	= 0;
+		while (i < vector.length)
+		{
+			s += vector[i] + (i == vector.length - 1 ? "" : ", ");
+			i++;
+		}// end while - i
+		s += " ]";
+		return s;
+	}// end getStringHorizontal
 }// end Aid - class
