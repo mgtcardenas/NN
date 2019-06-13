@@ -59,7 +59,7 @@ public class Layer
 	}// end costFunction
 	
 	/**
-	 * Calculates the general error (delta) for all the layers using the nextLayers after them
+	 * Calculates the general error (delta) for all the ls using the nextLayers after them
 	 * 
 	 * @param nextLayer - the layer after this one
 	 */

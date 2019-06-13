@@ -12,14 +12,14 @@ public class TestRunner
 	{
 		prepare();
 		
-		double	MSE		= 0;
-		Runner	runner	= new Runner(inputs, targets, 0.1, firstLayer, secondLayer);
+		double	error	= 0;
+		Runner	runner	= new Runner(inputs, targets, 1, firstLayer, secondLayer);
 		int		i		= 0;
 		while (i < 100000)
 		{
-			MSE = runner.run();
-			if (i % 10000 == 0)
-				System.out.println("LOOP: " + i + " - Error: " + MSE / inputs.size() * 100);
+			error = runner.epoch(0.1);
+			if (i % 100 == 0)
+				System.out.println("LOOP: " + i + " - Error: " + error);
 			i++;
 		}// end while
 		

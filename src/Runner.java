@@ -1,73 +1,116 @@
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 public class Runner
 {
-	Layer[]			layers;
+	Layer[]			ls;
 	List<double[]>	inputs;
 	List<double[]>	targets;
-	double			lambda;
+	List<Integer>	indexes;
+	double			divs;
 	double[]		output;
+	double[]		input;
+	double[]		target;
+	double			error;
 	
 	static Random	r	= new Random(System.currentTimeMillis());
 	
-	public Runner(List<double[]> inputs, List<double[]> targets, double lambda, Layer... layers)
+	public Runner(List<double[]> inputs, List<double[]> targets, int divs, Layer... ls)
 	{
 		this.inputs		= inputs;
 		this.targets	= targets;
-		this.lambda		= lambda;
-		this.layers		= layers;
-	}// end Runner - Constructor
-	
-	public double run()
-	{
-		double	MSE	= 0;
-		int		i	= 0;
+		this.divs		= divs;
+		this.ls			= ls;
+		this.error		= 0;
+		
+		this.indexes	= new ArrayList<>();
+		int i = 0;
 		while (i < inputs.size())
 		{
-			forward(inputs.get(i));
-			MSE += layers[layers.length - 1].costFunction(targets.get(i));
-			
-			int j = layers.length - 2;
-			while (j >= 0)
-			{
-				layers[j].computeDeltaError(layers[j + 1]);
-				j--;
-			}// end while - j
-			
-			j = 0;
-			while (j < layers.length)
-			{
-				layers[j].adjustWeights(lambda);
-				j++;
-			}// end while - j
-			
+			indexes.add(i, i);
+			i++;
+		}// end while
+	}// end Runner - Constructor
+	
+	public double epoch(double lambda)
+	{
+		Collections.shuffle(indexes);
+		error = run(lambda);
+		
+		return error;
+	}// end epoch
+	
+	private double run(double lambda)
+	{
+		error = 0;
+		int i = 0;
+		while (i < inputs.size() / divs)
+		{
+			work(lambda, indexes.get(i));
 			i++;
 		}// end while
 		
-		return MSE;
+		error = 100 * (error / ((double) inputs.size() / divs));
+		
+		return error;
 	}// end run
+	
+	private double work(double lambda, int index)
+	{
+		input	= inputs.get(index);
+		target	= targets.get(index);
+		
+		output	= forward(input);
+		error	+= ls[ls.length - 1].costFunction(target);
+		
+		computeDeltas();
+		adjustWeights(lambda);
+		
+		return error;
+	}// end work
+	
+	private void computeDeltas()
+	{
+		int l = 0;
+		while (l < ls.length - 1)
+		{
+			ls[ls.length - l - 2].computeDeltaError(ls[ls.length - l - 1]);
+			l++;
+		}// end while
+	}// end computeDeltas
+	
+	private void adjustWeights(double lambda)
+	{
+		int j = 0;
+		while (j < ls.length)
+		{
+			ls[j].adjustWeights(lambda);
+			j++;
+		}// end while - j
+	}// end adjustWeights
 	
 	public double[] forward(double[] input)
 	{
-		switch (layers.length)
+		switch (ls.length)
 		{
 			case 2:
-				return layers[1].forward(layers[0].forward(input));
+				return ls[1].forward(ls[0].forward(input));
 			case 3:
-				return layers[2].forward(layers[1].forward(layers[0].forward(input)));
+				return ls[2].forward(ls[1].forward(ls[0].forward(input)));
 			case 4:
-				return layers[3].forward(layers[2].forward(layers[1].forward(layers[0].forward(input))));
+				return ls[3].forward(ls[2].forward(ls[1].forward(ls[0].forward(input))));
 			default:
 				int i = 1;
-				output = layers[0].forward(input);
-				while (i < layers.length)
+				output = ls[0].forward(input);
+				while (i < ls.length)
 				{
-					output = layers[i].forward(output);
+					output = ls[i].forward(output);
 					i++;
 				}// end while
 				return output;
-		}// end switch layers.length
+		}// end switch ls.length
 	}// end forward
 	
 	public static double random()

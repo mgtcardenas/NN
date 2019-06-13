@@ -9,7 +9,7 @@ import java.util.List;
  * 
  * In the end, test the forward with 100, it should be 212
  * 
- * You must have 3 layers
+ * You must have 3 ls
  * 1 input & 4 outputs, 4 inputs & 4 outputs, 4 inputs & 1 output
  * in that order...
  */
