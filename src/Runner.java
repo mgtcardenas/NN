@@ -24,11 +24,19 @@ public class Runner
 			forward(inputs.get(i));
 			MSE += layers[layers.length - 1].costFunction(targets.get(i));
 			
-			for (int j = layers.length - 2; j >= 0; j--)
+			int j = layers.length - 2;
+			while (j >= 0)
+			{
 				layers[j].computeDeltaError(layers[j + 1]);
+				j--;
+			}// end while - j
 			
-			for (int j = 0; j < layers.length; j++)
+			j = 0;
+			while (j < layers.length)
+			{
 				layers[j].adjustWeights(lambda);
+				j++;
+			}// end while - j
 			
 			i++;
 		}// end while

@@ -19,16 +19,16 @@ public class TestRunner
 		{
 			MSE = runner.run();
 			if (i % 10000 == 0)
-				System.out.println("LOOP " + i + ": " + MSE / inputs.size() * 100);
+				System.out.println("LOOP: " + i + " - Error: " + MSE / inputs.size() * 100);
 			i++;
 		}// end while
 		
 		i = 0;
 		while (i < inputs.size())
 		{
-			System.out.print("Input:\t");
+			System.out.print("Input \t - ");
 			Aid.printHorizontal(inputs.get(i));
-			System.out.print("Output:\t");
+			System.out.print("Output \t - ");
 			Aid.printHorizontal(runner.forward(inputs.get(i)));
 			i++;
 		}// end while
