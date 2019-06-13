@@ -40,13 +40,12 @@ class Relu implements Fun
 	}// end derive
 }// end Relu - class
 
-// TODO: Ask Omar for his HTan activation function for the semiring exercise
 class HTan implements Fun
 {
 	@Override
 	public float activate(float x)
 	{
-		return (float) ((Math.exp(x) - Math.exp(-x)) / (Math.exp(x) + Math.exp(-x)));
+		return (float) (2 / (1 + Math.pow(Math.E, -(2 * x))) - 1);
 	}// end activate
 	
 	@Override
