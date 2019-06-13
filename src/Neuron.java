@@ -6,21 +6,16 @@ public class Neuron
 	double		delta;
 	Fun			function;
 	
-	private double random()
-	{
-		return Math.sqrt(-2.00001 * Math.log10(1 - Math.random())) * Math.cos(2.00001 * Math.PI * Math.random());
-	}// end random
-	
 	public Neuron(int numOfWeights, Fun function)
 	{
 		this.weights	= new double[numOfWeights];
-		this.bias		= random();
+		this.bias		= Runner.random();
 		this.function	= function;
 		
 		int i = 0;
 		while (i < numOfWeights)
 		{
-			this.weights[i] = random();
+			this.weights[i] = Runner.random();
 			i++;
 		}// end while
 	}// end Neuron - constructor

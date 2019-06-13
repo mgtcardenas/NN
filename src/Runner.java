@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Random;
 
 public class Runner
 {
@@ -6,6 +7,9 @@ public class Runner
 	List<double[]>	inputs;
 	List<double[]>	targets;
 	double			lambda;
+	double[]		output;
+	
+	static Random	r	= new Random(System.currentTimeMillis());
 	
 	public Runner(List<double[]> inputs, List<double[]> targets, double lambda, Layer... layers)
 	{
@@ -48,8 +52,6 @@ public class Runner
 	{
 		switch (layers.length)
 		{
-			case 1:
-				return layers[0].forward(input);
 			case 2:
 				return layers[1].forward(layers[0].forward(input));
 			case 3:
@@ -57,8 +59,19 @@ public class Runner
 			case 4:
 				return layers[3].forward(layers[2].forward(layers[1].forward(layers[0].forward(input))));
 			default:
-				System.out.println("COMO ES LA FUNCION RECURSIVA?");
-				return null;
+				int i = 1;
+				output = layers[0].forward(input);
+				while (i < layers.length)
+				{
+					output = layers[i].forward(output);
+					i++;
+				}// end while
+				return output;
 		}// end switch layers.length
 	}// end forward
+	
+	public static double random()
+	{
+		return Math.sqrt(-2.00001 * Math.log10(1 - r.nextDouble())) * Math.cos(2.00001 * Math.PI * r.nextDouble());
+	}// end random
 }// end Runner - class
