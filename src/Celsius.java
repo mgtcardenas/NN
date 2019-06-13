@@ -15,16 +15,16 @@ import java.util.List;
  */
 public class Celsius
 {
-	static double[]			output		= new double[1];
+	static float[]			output		= new float[1];
 	static Layer			firstLayer	= new Layer(1, 4, new Lineal());
 	static Layer			secondLayer	= new Layer(4, 4, new Lineal());
 	static Layer			thirdLayer	= new Layer(4, 1, new Lineal());
-	static List<double[]>	inputs		= new ArrayList<>();
-	static List<double[]>	targets		= new ArrayList<>();
+	static List<float[]>	inputs		= new ArrayList<>();
+	static List<float[]>	targets		= new ArrayList<>();
 	
 	public static void main(String[] args)
 	{
-		double error;
+		float error;
 		
 		prepare();
 		
@@ -37,7 +37,7 @@ public class Celsius
 			i++;
 		}// end while
 		
-		double[] input = new double[] { 100 };
+		float[] input = new float[] { 100 };
 		System.out.print("Input: [ 100 ] ");
 		output = thirdLayer.forward(secondLayer.forward(firstLayer.forward(input)));
 		System.out.print("Output ");
@@ -49,26 +49,26 @@ public class Celsius
 	 */
 	private static void prepare()
 	{
-		inputs.add(new double[] { -40 });
-		inputs.add(new double[] { -10 });
-		inputs.add(new double[] { 0 });
-		inputs.add(new double[] { 8 });
-		inputs.add(new double[] { 15 });
-		inputs.add(new double[] { 22 });
-		inputs.add(new double[] { 38 });
+		inputs.add(new float[] { -40 });
+		inputs.add(new float[] { -10 });
+		inputs.add(new float[] { 0 });
+		inputs.add(new float[] { 8 });
+		inputs.add(new float[] { 15 });
+		inputs.add(new float[] { 22 });
+		inputs.add(new float[] { 38 });
 		
-		targets.add(new double[] { -40 });
-		targets.add(new double[] { 14 });
-		targets.add(new double[] { 32 });
-		targets.add(new double[] { 46.4 });
-		targets.add(new double[] { 59 });
-		targets.add(new double[] { 71.6 });
-		targets.add(new double[] { 100.4 });
+		targets.add(new float[] { -40 });
+		targets.add(new float[] { 14 });
+		targets.add(new float[] { 32 });
+		targets.add(new float[] { 46.4F });
+		targets.add(new float[] { 59 });
+		targets.add(new float[] { 71.6F });
+		targets.add(new float[] { 100.4F });
 	}// end prepare
 	
-	private static double testBackward()
+	private static float testBackward()
 	{
-		double	MSE	= 0;
+		float	MSE	= 0;
 		
 		int		i	= 0;
 		while (i < inputs.size())
@@ -79,9 +79,9 @@ public class Celsius
 			secondLayer.computeDeltaError(thirdLayer);
 			firstLayer.computeDeltaError(secondLayer);
 			
-			firstLayer.adjustWeights(0.01);
-			secondLayer.adjustWeights(0.01);
-			thirdLayer.adjustWeights(0.01);
+			firstLayer.adjustWeights(0.01F);
+			secondLayer.adjustWeights(0.01F);
+			thirdLayer.adjustWeights(0.01F);
 			
 			i++;
 		}// end while

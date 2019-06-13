@@ -3,11 +3,11 @@ import java.util.List;
 
 public class TestNN
 {
-	static double[]			output		= new double[1];
+	static float[]			output		= new float[1];
 	static Layer			firstLayer	= new Layer(2, 7, new Sigmoid());
 	static Layer			secondLayer	= new Layer(7, 1, new Sigmoid());
-	static List<double[]>	inputs		= new ArrayList<>();
-	static List<double[]>	targets		= new ArrayList<>();
+	static List<float[]>	inputs		= new ArrayList<>();
+	static List<float[]>	targets		= new ArrayList<>();
 	
 	public static void main(String[] args)
 	{
@@ -35,20 +35,20 @@ public class TestNN
 	
 	private static void prepare()
 	{
-		inputs.add(new double[] { 0, 0 });
-		inputs.add(new double[] { 1, 1 });
-		inputs.add(new double[] { 0, 1 });
-		inputs.add(new double[] { 1, 0 });
+		inputs.add(new float[] { 0, 0 });
+		inputs.add(new float[] { 1, 1 });
+		inputs.add(new float[] { 0, 1 });
+		inputs.add(new float[] { 1, 0 });
 		
-		targets.add(new double[] { 1 });
-		targets.add(new double[] { 1 });
-		targets.add(new double[] { 0 });
-		targets.add(new double[] { 0 });
+		targets.add(new float[] { 1 });
+		targets.add(new float[] { 1 });
+		targets.add(new float[] { 0 });
+		targets.add(new float[] { 0 });
 	}// end prepare
 	
 	private static void testBackward()
 	{
-		double	MSE	= 0;
+		float	MSE	= 0;
 		
 		int		i	= 0;
 		while (i < inputs.size())
@@ -57,8 +57,8 @@ public class TestNN
 			MSE += secondLayer.costFunction(targets.get(i));
 			firstLayer.computeDeltaError(secondLayer);
 			
-			firstLayer.adjustWeights(0.1);
-			secondLayer.adjustWeights(0.1);
+			firstLayer.adjustWeights(0.1F);
+			secondLayer.adjustWeights(0.1F);
 			
 			i++;
 		}// end while

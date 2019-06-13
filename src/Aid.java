@@ -1,6 +1,6 @@
 public abstract class Aid
 {
-	public static void printHorizontal(double[] vector)
+	public static void printHorizontal(float[] vector)
 	{
 		System.out.print("[ ");
 		int i = 0;

@@ -6,18 +6,18 @@ import java.util.Random;
 public class Runner
 {
 	Layer[]			ls;
-	List<double[]>	inputs;
-	List<double[]>	targets;
+	List<float[]>	inputs;
+	List<float[]>	targets;
 	List<Integer>	indexes;
-	double			divs;
-	double[]		output;
-	double[]		input;
-	double[]		target;
-	double			error;
+	float			divs;
+	float[]			output;
+	float[]			input;
+	float[]			target;
+	float			error;
 	
 	static Random	r	= new Random(System.currentTimeMillis());
 	
-	public Runner(List<double[]> inputs, List<double[]> targets, int divs, Layer... ls)
+	public Runner(List<float[]> inputs, List<float[]> targets, int divs, Layer... ls)
 	{
 		this.inputs		= inputs;
 		this.targets	= targets;
@@ -34,7 +34,7 @@ public class Runner
 		}// end while
 	}// end Runner - Constructor
 	
-	public double epoch(double lambda)
+	public float epoch(float lambda)
 	{
 		Collections.shuffle(indexes);
 		error = run(lambda);
@@ -42,7 +42,7 @@ public class Runner
 		return error;
 	}// end epoch
 	
-	private double run(double lambda)
+	private float run(float lambda)
 	{
 		error = 0;
 		int i = 0;
@@ -52,12 +52,12 @@ public class Runner
 			i++;
 		}// end while
 		
-		error = 100 * (error / ((double) inputs.size() / divs));
+		error = 100 * (error / ((float) inputs.size() / divs));
 		
 		return error;
 	}// end run
 	
-	private double work(double lambda, int index)
+	private float work(float lambda, int index)
 	{
 		input	= inputs.get(index);
 		target	= targets.get(index);
@@ -81,7 +81,7 @@ public class Runner
 		}// end while
 	}// end computeDeltas
 	
-	private void adjustWeights(double lambda)
+	private void adjustWeights(float lambda)
 	{
 		int j = 0;
 		while (j < ls.length)
@@ -91,7 +91,7 @@ public class Runner
 		}// end while - j
 	}// end adjustWeights
 	
-	public double[] forward(double[] input)
+	public float[] forward(float[] input)
 	{
 		switch (ls.length)
 		{
@@ -113,8 +113,8 @@ public class Runner
 		}// end switch ls.length
 	}// end forward
 	
-	public static double random()
+	public static float random()
 	{
-		return Math.sqrt(-2.00001 * Math.log10(1 - r.nextDouble())) * Math.cos(2.00001 * Math.PI * r.nextDouble());
+		return (float) (Math.sqrt(-2.00001 * Math.log10(1 - r.nextDouble())) * Math.cos(2.00001 * Math.PI * r.nextDouble()));
 	}// end random
 }// end Runner - class

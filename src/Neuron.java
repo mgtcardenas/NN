@@ -1,14 +1,14 @@
 public class Neuron
 {
-	double[]	weights;
-	double		bias;
-	double		output;
-	double		delta;
+	float[]	weights;
+	float		bias;
+	float		output;
+	float		delta;
 	Fun			function;
 	
 	public Neuron(int numOfWeights, Fun function)
 	{
-		this.weights	= new double[numOfWeights];
+		this.weights	= new float[numOfWeights];
 		this.bias		= Runner.random();
 		this.function	= function;
 		
@@ -20,17 +20,17 @@ public class Neuron
 		}// end while
 	}// end Neuron - constructor
 	
-	private double activate(double x)
+	private float activate(float x)
 	{
 		return function.activate(x);
 	}// end activate
 	
-	public double derive(double x)
+	public float derive(float x)
 	{
 		return function.derive(x);
 	}// end derive
 	
-	public double evaluate(double[] inputUnits)
+	public float evaluate(float[] inputUnits)
 	{
 		this.output = 0;
 		

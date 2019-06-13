@@ -1,7 +1,7 @@
 public class Layer
 {
 	Neuron[]	neurons;
-	double[]	input;
+	float[]		input;
 	
 	public Layer(int numWeights, int numNeurons, Fun function)
 	{
@@ -15,12 +15,12 @@ public class Layer
 		}// end while
 	}// end Layer - constructor
 	
-	public double[] forward(double[] inputUnits)
+	public float[] forward(float[] inputUnits)
 	{
 		input = inputUnits;
 		
-		double[]	outputUnits	= new double[neurons.length];
-		int			i			= 0;
+		float[]	outputUnits	= new float[neurons.length];
+		int		i			= 0;
 		while (i < neurons.length)
 		{
 			outputUnits[i] = neurons[i].evaluate(inputUnits);
@@ -39,10 +39,10 @@ public class Layer
 	 * @param  desiredOutput - what we wanted to obtain
 	 * @return               El Mean Square Error
 	 */
-	public double costFunction(double[] desiredOutput)
+	public float costFunction(float[] desiredOutput)
 	{
-		double	error;
-		double	MSE;
+		float	error;
+		float	MSE;
 		
 		MSE = 0;
 		
@@ -86,7 +86,7 @@ public class Layer
 	 *
 	 * @param lambda - a hyperparameter which dictates how big the adjustments are
 	 */
-	public void adjustWeights(double lambda)
+	public void adjustWeights(float lambda)
 	{
 		int i = 0;
 		while (i < neurons.length)

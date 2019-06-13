@@ -5,19 +5,19 @@ public class TestRunner
 {
 	static Layer			firstLayer	= new Layer(2, 7, new Sigmoid());
 	static Layer			secondLayer	= new Layer(7, 1, new Sigmoid());
-	static List<double[]>	inputs		= new ArrayList<>();
-	static List<double[]>	targets		= new ArrayList<>();
+	static List<float[]>	inputs		= new ArrayList<>();
+	static List<float[]>	targets		= new ArrayList<>();
 	
 	public static void main(String[] args)
 	{
 		prepare();
 		
-		double	error	= 0;
+		float	error	= 0;
 		Runner	runner	= new Runner(inputs, targets, 1, firstLayer, secondLayer);
 		int		i		= 0;
 		while (i < 100000)
 		{
-			error = runner.epoch(0.1);
+			error = runner.epoch(0.1F);
 			if (i % 100 == 0)
 				System.out.println("LOOP: " + i + " - Error: " + error);
 			i++;
@@ -36,14 +36,14 @@ public class TestRunner
 	
 	private static void prepare()
 	{
-		inputs.add(new double[] { 0, 0 });
-		inputs.add(new double[] { 1, 1 });
-		inputs.add(new double[] { 0, 1 });
-		inputs.add(new double[] { 1, 0 });
+		inputs.add(new float[] { 0, 0 });
+		inputs.add(new float[] { 1, 1 });
+		inputs.add(new float[] { 0, 1 });
+		inputs.add(new float[] { 1, 0 });
 		
-		targets.add(new double[] { 1 });
-		targets.add(new double[] { 1 });
-		targets.add(new double[] { 0 });
-		targets.add(new double[] { 0 });
+		targets.add(new float[] { 1 });
+		targets.add(new float[] { 1 });
+		targets.add(new float[] { 0 });
+		targets.add(new float[] { 0 });
 	}// end prepare
 }// end TestRunner - class

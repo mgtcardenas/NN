@@ -1,8 +1,8 @@
 public interface Fun
 {
-	double activate(double x);
+	float activate(float x);
 	
-	double derive(double x);
+	float derive(float x);
 }// end Fun - interface
 
 enum ActFun
@@ -13,13 +13,13 @@ enum ActFun
 class Sigmoid implements Fun
 {
 	@Override
-	public double activate(double x)
+	public float activate(float x)
 	{
-		return 1 / (1 + Math.exp(-x));
+		return (float) (1 / (1 + Math.exp(-x)));
 	}// end activate
 	
 	@Override
-	public double derive(double x)
+	public float derive(float x)
 	{
 		return x * (1 - x);
 	}// end derive
@@ -28,13 +28,13 @@ class Sigmoid implements Fun
 class Relu implements Fun
 {
 	@Override
-	public double activate(double x)
+	public float activate(float x)
 	{
 		return Math.max(0, x);
 	}// end activate
 	
 	@Override
-	public double derive(double x)
+	public float derive(float x)
 	{
 		return x > 0 ? 1 : 0;
 	}// end derive
@@ -44,13 +44,13 @@ class Relu implements Fun
 class HTan implements Fun
 {
 	@Override
-	public double activate(double x)
+	public float activate(float x)
 	{
-		return (Math.exp(x) - Math.exp(-x)) / (Math.exp(x) + Math.exp(-x));
+		return (float) ((Math.exp(x) - Math.exp(-x)) / (Math.exp(x) + Math.exp(-x)));
 	}// end activate
 	
 	@Override
-	public double derive(double x)
+	public float derive(float x)
 	{
 		return 1 - activate(x) * activate(x);
 	}// end derive
@@ -59,14 +59,14 @@ class HTan implements Fun
 class Lineal implements Fun
 {
 	@Override
-	public double activate(double x)
+	public float activate(float x)
 	{
-		return 0.1 * x;
+		return 0.1F * x;
 	}// end activate
 	
 	@Override
-	public double derive(double x)
+	public float derive(float x)
 	{
-		return 0.1;
+		return 0.1F;
 	}// end derive
 }// end Lineal - class
