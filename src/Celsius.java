@@ -15,7 +15,6 @@ import java.util.List;
  */
 public class Celsius
 {
-	static float[]			output		= new float[1];
 	static Layer			firstLayer	= new Layer(1, 4, new Lineal());
 	static Layer			secondLayer	= new Layer(4, 4, new Lineal());
 	static Layer			thirdLayer	= new Layer(4, 1, new Lineal());
@@ -28,10 +27,11 @@ public class Celsius
 		
 		prepare();
 		
-		int i = 0; // Traning
+		Runner	runner	= new Runner(inputs, targets, 1, firstLayer, secondLayer, thirdLayer);
+		int		i		= 0;
 		while (i < 500)
 		{
-			error = testBackward();
+			error = runner.epoch(0.01F);
 			if (i % 10 == 0)
 				System.out.println("LOOP " + i + ": " + error);
 			i++;
@@ -39,9 +39,8 @@ public class Celsius
 		
 		float[] input = new float[] { 100 };
 		System.out.print("Input: [ 100 ] ");
-		output = thirdLayer.forward(secondLayer.forward(firstLayer.forward(input)));
 		System.out.print("Output ");
-		Aid.printHorizontal(output);
+		Aid.printHorizontal(runner.forward(input));
 	}// end main
 	
 	/**
@@ -65,27 +64,4 @@ public class Celsius
 		targets.add(new float[] { 71.6F });
 		targets.add(new float[] { 100.4F });
 	}// end prepare
-	
-	private static float testBackward()
-	{
-		float	MSE	= 0;
-		
-		int		i	= 0;
-		while (i < inputs.size())
-		{
-			output	= thirdLayer.forward(secondLayer.forward(firstLayer.forward(inputs.get(i))));
-			MSE		+= thirdLayer.costFunction(targets.get(i));
-			
-			secondLayer.computeDeltaError(thirdLayer);
-			firstLayer.computeDeltaError(secondLayer);
-			
-			firstLayer.adjustWeights(0.01F);
-			secondLayer.adjustWeights(0.01F);
-			thirdLayer.adjustWeights(0.01F);
-			
-			i++;
-		}// end while
-		
-		return MSE / inputs.size() * 100;
-	}// end testBackward
 }// end Celsius - class
