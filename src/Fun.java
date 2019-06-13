@@ -40,6 +40,7 @@ class Relu implements Fun
 	}// end derive
 }// end Relu - class
 
+// TODO: Ask Omar for his HTan activation function for the semiring exercise
 class HTan implements Fun
 {
 	@Override

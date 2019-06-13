@@ -1,9 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestNN
+public class TestRunner
 {
-	static double[]			output		= new double[1];
 	static Layer			firstLayer	= new Layer(2, 7, new Sigmoid());
 	static Layer			secondLayer	= new Layer(7, 1, new Sigmoid());
 	static List<double[]>	inputs		= new ArrayList<>();
@@ -13,22 +12,24 @@ public class TestNN
 	{
 		prepare();
 		
-		int i = 0;
+		double	MSE		= 0;
+		Runner	runner	= new Runner(inputs, targets, 0.1, firstLayer, secondLayer);
+		int		i		= 0;
 		while (i < 100000)
 		{
-			System.out.print("LOOP " + i + ": ");
-			testBackward();
+			MSE = runner.run();
+			if (i % 10000 == 0)
+				System.out.println("LOOP " + i + ": " + MSE / inputs.size() * 100);
 			i++;
 		}// end while
 		
 		i = 0;
 		while (i < inputs.size())
 		{
-			System.out.print("Input: ");
+			System.out.print("Input:\t");
 			Aid.printHorizontal(inputs.get(i));
-			output = secondLayer.forward(firstLayer.forward(inputs.get(i)));
-			System.out.print("Output ");
-			Aid.printHorizontal(output);
+			System.out.print("Output:\t");
+			Aid.printHorizontal(runner.forward(inputs.get(i)));
 			i++;
 		}// end while
 	}// end main
@@ -45,24 +46,4 @@ public class TestNN
 		targets.add(new double[] { 0 });
 		targets.add(new double[] { 0 });
 	}// end prepare
-	
-	private static void testBackward()
-	{
-		double	MSE	= 0;
-		
-		int		i	= 0;
-		while (i < inputs.size())
-		{
-			secondLayer.forward(firstLayer.forward(inputs.get(i)));
-			MSE += secondLayer.costFunction(targets.get(i));
-			firstLayer.computeDeltaError(secondLayer);
-			
-			firstLayer.adjustWeights(0.1);
-			secondLayer.adjustWeights(0.1);
-			
-			i++;
-		}// end while
-		
-		System.out.println("El error fue " + MSE / inputs.size() * 100);
-	}// end testBackward
-}// end TestNN - class
+}// end TestRunner - class
