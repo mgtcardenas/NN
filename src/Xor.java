@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestRunner
+public class Xor
 {
 	static Layer			firstLayer	= new Layer(2, 7, new Sigmoid());
 	static Layer			secondLayer	= new Layer(7, 1, new Sigmoid());
@@ -46,4 +46,4 @@ public class TestRunner
 		targets.add(new float[] { 0 });
 		targets.add(new float[] { 0 });
 	}// end prepare
-}// end TestRunner - class
+}// end Xor - class

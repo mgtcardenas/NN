@@ -1,10 +1,10 @@
 public class Neuron
 {
 	float[]	weights;
-	float		bias;
-	float		output;
-	float		delta;
-	Fun			function;
+	float	bias;
+	float	output;
+	float	delta;
+	Fun		function;
 	
 	public Neuron(int numOfWeights, Fun function)
 	{
