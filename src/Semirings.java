@@ -7,6 +7,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -14,44 +15,39 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Semirings extends Application
+public class Semirings
 {
-	static Layer			firstLayer	= new Layer(2, 30, new Sigmoid());
-	static Layer			secondLayer	= new Layer(30, 1, new Sigmoid());
-	static List<float[]>	inputs		= new ArrayList<>();
-	static List<float[]>	targets		= new ArrayList<>();
-	static BufferedImage	bI			= new BufferedImage(300, 300, BufferedImage.TYPE_INT_RGB);
+	static Layer         firstLayer  = new Layer(2, 30, new Sigmoid());
+	static Layer         secondLayer = new Layer(30, 1, new Sigmoid());
+	static List<float[]> inputs      = new ArrayList<>();
+	static List<float[]> targets     = new ArrayList<>();
+	static JPanel        panel       = new JPanel();
+	static JFrame        frame       = new JFrame("JPanel Example");
+	static BufferedImage bI          = new BufferedImage(300, 300, BufferedImage.TYPE_INT_RGB);
 	
-	public static void main(String[] args)
-	{
-		launch(args);
-	}// end main
-	
-	@Override
-	public void start(Stage primaryStage)
+	public static void main(String[] args) throws IOException
 	{
 		prepare(-25, -5, 100, 0, 180, 255 << 16);
 		prepare(25, 5, 100, 180, 180, 255);
 		
-		ImageView	iv		= new ImageView(SwingFXUtils.toFXImage(bI, null));
-		VBox		vbox	= new VBox(iv);
-		Scene		scene	= new Scene(vbox);
+		//
+		// float error = Float.MAX_VALUE;
+		// Runner runner = new Runner(inputs, targets, (int) (inputs.size() * 0.1), firstLayer, secondLayer);
+		// int i = 0;
+		// while (i < 100000)
+		// {
+		// error = runner.epoch(0.01F);
+		// if (i % 100 == 0)
+		// System.out.println("LOOP: " + i + " - Error: " + error);
+		// i++;
+		// }// end while
 		
-		primaryStage.setResizable(false);
-		primaryStage.setScene(scene);
-		primaryStage.show();
-		
-		float	error	= Float.MAX_VALUE;
-		Runner	runner	= new Runner(inputs, targets, (int) (inputs.size() * 0.1), firstLayer, secondLayer);
-		int		i		= 0;
-		while (error > 0.01)
-		{
-			error = runner.epoch(0.01F);
-			if (i % 100 == 0)
-				System.out.println("LOOP: " + i + " - Error: " + error);
-			i++;
-		}// end while
-	}// end start
+		ImageIO.write(bI, "png", new File("semi-ring.png"));
+		panel.add(new JLabel(new ImageIcon(bI)));
+		frame.add(panel);
+		frame.pack();
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	}// end main
 	
 	private static void redrawRings(BufferedImage img)
 	{
@@ -59,6 +55,7 @@ public class Semirings extends Application
 			img.setRGB((int) inputs.get(i)[0], (int) inputs.get(i)[1], targets.get(i)[0] == -1 ? 255 << 16 : 255);
 	}// end redrawPoints
 	
+	//region Circles
 	private static void prepare(int x, int y, int numPoints, int initialAngle, int angleMagnitude, int rgb)
 	{
 		int i = 0;
@@ -95,4 +92,5 @@ public class Semirings extends Application
 		
 		g2d.dispose();
 	}// end paintWhite
+	//endregion Circles
 }// end Semirings - class
