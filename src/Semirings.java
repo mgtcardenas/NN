@@ -1,15 +1,14 @@
-import javax.swing.*;
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.*;
+
 public class Semirings
 {
-	static Layer			firstLayer	= new Layer(2, 30, new HTan());
-	static Layer			secondLayer	= new Layer(30, 30, new HTan());
-	static Layer			thirdLayer	= new Layer(30, 1, new Sigmoid());
+	static Layer			firstLayer	= new Layer(2, 10, new HTan());
+	static Layer			secondLayer	= new Layer(10, 10, new HTan());
+	static Layer			thirdLayer	= new Layer(10, 1, new Sigmoid());
 	static List<float[]>	inputs		= new ArrayList<>();
 	static List<float[]>	targets		= new ArrayList<>();
 	static JPanel			panel		= new JPanel();
@@ -46,9 +45,9 @@ public class Semirings
 		int		p, gray;
 		float[]	output;
 		
-		for (int y = -149; y <= 149; y++) // Go through every one of the 300 by 300
+		for (int y = -149; y < 150; y++) // Go through every one of the 300 by 300
 		{
-			for (int x = -149; x <= 149; x++)
+			for (int x = -149; x < 150; x++)
 			{
 				output	= runner.forward(new float[] { x, y });
 				gray	= (int) (output[0] * 255);
@@ -59,7 +58,7 @@ public class Semirings
 		
 		redrawRings();
 		panel.getComponent(0).repaint();
-		frame.setTitle("Epoch" + epoch + " - Error: " + error);
+		frame.setTitle("Epoch " + epoch + " - Error: " + error);
 	}// end evaluateNN
 	
 	// region Circles

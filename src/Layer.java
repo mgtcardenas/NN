@@ -2,10 +2,12 @@ public class Layer
 {
 	Neuron[]	neurons;
 	float[]		input;
+	float[]		output;
 	
 	public Layer(int numWeights, int numNeurons, Fun function)
 	{
-		this.neurons = new Neuron[numNeurons];
+		this.neurons	= new Neuron[numNeurons];
+		this.output		= new float[numNeurons];
 		
 		int i = 0;
 		while (i < numNeurons)
@@ -19,16 +21,14 @@ public class Layer
 	{
 		input = inputUnits;
 		
-		// TODO: Stop doing this and put outputUnits as a field called 'output'. I don't think you need to create it anew every time
-		float[]	outputUnits	= new float[neurons.length];
-		int		i			= 0;
+		int i = 0;
 		while (i < neurons.length)
 		{
-			outputUnits[i] = neurons[i].evaluate(inputUnits);
+			output[i] = neurons[i].evaluate(inputUnits);
 			i++;
 		}// end while
 		
-		return outputUnits;
+		return output;
 	}// end forward
 	
 	/**
