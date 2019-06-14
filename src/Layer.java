@@ -19,6 +19,7 @@ public class Layer
 	{
 		input = inputUnits;
 		
+		// TODO: Stop doing this and put outputUnits as a field called 'output'. I don't think you need to create it anew every time
 		float[]	outputUnits	= new float[neurons.length];
 		int		i			= 0;
 		while (i < neurons.length)

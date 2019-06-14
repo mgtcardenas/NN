@@ -1,67 +1,80 @@
-import javafx.application.Application;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Semirings
 {
-	static Layer         firstLayer  = new Layer(2, 30, new Sigmoid());
-	static Layer         secondLayer = new Layer(30, 1, new Sigmoid());
-	static List<float[]> inputs      = new ArrayList<>();
-	static List<float[]> targets     = new ArrayList<>();
-	static JPanel        panel       = new JPanel();
-	static JFrame        frame       = new JFrame("JPanel Example");
-	static BufferedImage bI          = new BufferedImage(300, 300, BufferedImage.TYPE_INT_RGB);
+	static Layer			firstLayer	= new Layer(2, 30, new HTan());
+	static Layer			secondLayer	= new Layer(30, 30, new HTan());
+	static Layer			thirdLayer	= new Layer(30, 1, new Sigmoid());
+	static List<float[]>	inputs		= new ArrayList<>();
+	static List<float[]>	targets		= new ArrayList<>();
+	static JPanel			panel		= new JPanel();
+	static JFrame			frame		= new JFrame();
+	static BufferedImage	bI			= new BufferedImage(300, 300, BufferedImage.TYPE_INT_RGB);
 	
-	public static void main(String[] args) throws IOException
+	public static void main(String[] args)
 	{
-		prepare(-25, -5, 100, 0, 180, 255 << 16);
-		prepare(25, 5, 100, 180, 180, 255);
+		prepare(-20, -10, 100, 0, 180, 255 << 16);
+		prepare(20, 10, 100, 180, 180, 255);
 		
-		//
-		// float error = Float.MAX_VALUE;
-		// Runner runner = new Runner(inputs, targets, (int) (inputs.size() * 0.1), firstLayer, secondLayer);
-		// int i = 0;
-		// while (i < 100000)
-		// {
-		// error = runner.epoch(0.01F);
-		// if (i % 100 == 0)
-		// System.out.println("LOOP: " + i + " - Error: " + error);
-		// i++;
-		// }// end while
-		
-		ImageIO.write(bI, "png", new File("semi-ring.png"));
+		// Img
 		panel.add(new JLabel(new ImageIcon(bI)));
 		frame.add(panel);
 		frame.pack();
 		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	}// end main
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		// NN
+		float	error	= Float.MAX_VALUE;
+		Runner	runner	= new Runner(inputs, targets, (int) (inputs.size() * 0.1), firstLayer, secondLayer, thirdLayer);
+		int		epoch	= 0;
+		while (error > 0.001)
+		{
+			error = runner.epoch(0.001F);
+			if (epoch % 100 == 0)
+				evaluateNN(runner, error, epoch);
+			epoch++;
+		}// end while
+	}// end main
 	
-	private static void redrawRings(BufferedImage img)
+	private static void evaluateNN(Runner runner, double error, int epoch)
+	{
+		int		p, gray;
+		float[]	output;
+		
+		for (int y = -149; y <= 149; y++) // Go through every one of the 300 by 300
+		{
+			for (int x = -149; x <= 149; x++)
+			{
+				output	= runner.forward(new float[] { x, y });
+				gray	= (int) (output[0] * 255);
+				p		= ((gray) << 16) | ((gray) << 8) | (gray);
+				bI.setRGB(150 + x, 150 - y, p);
+			}// end for - x
+		}// end for - y
+		
+		redrawRings();
+		panel.getComponent(0).repaint();
+		frame.setTitle("Epoch" + epoch + " - Error: " + error);
+	}// end evaluateNN
+	
+	// region Circles
+	private static void redrawRings()
 	{
 		for (int i = 0; i < inputs.size(); i++)
-			img.setRGB((int) inputs.get(i)[0], (int) inputs.get(i)[1], targets.get(i)[0] == -1 ? 255 << 16 : 255);
+			bI.setRGB(150 + (int) inputs.get(i)[0], 150 - (int) inputs.get(i)[1], targets.get(i)[0] != 0 ? 255 << 16 : 255);
 	}// end redrawPoints
 	
-	//region Circles
 	private static void prepare(int x, int y, int numPoints, int initialAngle, int angleMagnitude, int rgb)
 	{
 		int i = 0;
 		while (i < numPoints)
 		{
-			drawCircle(x, y, Math.random() * 20 + 30, initialAngle, angleMagnitude, rgb);
+			drawCircle(x, y, Math.random() * 10 + 30, initialAngle, angleMagnitude, rgb);
 			i++;
 		}// end while
 	}// end prepare
@@ -79,18 +92,8 @@ public class Semirings
 	private static void drawCartesianPoint(int x, int y, int rgb)
 	{
 		bI.setRGB(150 + x, 150 - y, rgb);
-		inputs.add(new float[] { 150 + x, 150 - y });
+		inputs.add(new float[] { x, y });
 		targets.add(new float[] { rgb == 255 ? 0 : 1 });
 	}// end drawCartesianPoint
-	
-	private static void paintWhite()
-	{
-		Graphics2D g2d = bI.createGraphics();
-		
-		g2d.setColor(Color.WHITE);
-		g2d.fillRect(0, 0, bI.getWidth(), bI.getHeight());
-		
-		g2d.dispose();
-	}// end paintWhite
-	//endregion Circles
+		// endregion Circles
 }// end Semirings - class
