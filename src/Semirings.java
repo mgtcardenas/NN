@@ -6,8 +6,8 @@ import javax.swing.*;
 
 public class Semirings
 {
-	static Layer			firstLayer	= new Layer(2, 10, new HTan());
-	static Layer			secondLayer	= new Layer(10, 10, new HTan());
+	static Layer			firstLayer	= new Layer(2, 10, new Sigmoid());
+	static Layer			secondLayer	= new Layer(10, 10, new Sigmoid());
 	static Layer			thirdLayer	= new Layer(10, 1, new Sigmoid());
 	static List<float[]>	inputs		= new ArrayList<>();
 	static List<float[]>	targets		= new ArrayList<>();
