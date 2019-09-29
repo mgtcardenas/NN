@@ -92,7 +92,6 @@ public class Layer
 		int i = 0;
 		while (i < neurons.length)
 		{
-			neurons[i].bias -= neurons[i].delta * lambda;
 			
 			int j = 0;
 			while (j < neurons[i].weights.length)
@@ -101,7 +100,8 @@ public class Layer
 				j++;
 			}// end while - j
 			
-			neurons[i].delta = 0;
+			neurons[i].bias		-= neurons[i].delta * lambda;
+			neurons[i].delta	= 0;
 			i++;
 		}// end while - i
 	}// end adjustWeights

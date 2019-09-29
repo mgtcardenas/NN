@@ -69,3 +69,49 @@ class Lineal implements Fun
 		return 0.1F;
 	}// end derive
 }// end Lineal - class
+
+class HyperbolicTangent implements Fun
+{
+	@Override
+	public float activate(float x)
+	{
+		if (x < -45.0)
+			return -1.0F;
+		else if (x > 45.0)
+			return 1.0F;
+		else
+			return (float) Math.tanh(x);
+	}// end activate
+	
+	@Override
+	public float derive(float x)
+	{
+		double th = activate(x);
+		return (float) (1 - (th * th));
+	}// end derive
+}// end HyperbolicTangent
+
+class Sin implements Fun
+{
+	@Override
+	public float activate(float x)
+	{
+		if (x < -45.0)
+			return 0.0F;
+		else if (x > 45.0)
+			return 1.0F;
+		else
+			return (float) Math.sin(x);
+	}// end activate
+	
+	@Override
+	public float derive(float x)
+	{
+		if (x < -45.0)
+			return 1.0F;
+		else if (x > 45.0)
+			return 0.0F;
+		else
+			return (float) Math.cos(x);
+	}// end derive
+}// end Sin
