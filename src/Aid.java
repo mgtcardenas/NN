@@ -25,12 +25,12 @@ public abstract class Aid
 		return s;
 	}// end getStringHorizontal
 	
-	public static void normalizeOutput(float[] output, float min, float max)
+	public static void normalizeOutput(float[] output, float oldMin, float oldMax, float newMin, float newMax)
 	{
 		int i = 0;
 		while (i < output.length)
 		{
-			output[i] = (output[i] - min) / (max - min);
+			output[i] = newMin + (output[i] - oldMin) * (newMax - newMin) / (oldMax - oldMin);
 			i++;
 		}// end while
 	}// end normalizeOutput

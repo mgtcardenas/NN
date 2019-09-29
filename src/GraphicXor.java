@@ -5,8 +5,8 @@ import java.util.List;
 
 public class GraphicXor
 {
-	static Layer			firstLayer	= new Layer(2, 3, new Sigmoid());
-	static Layer			secondLayer	= new Layer(3, 1, new Sigmoid());
+	static Layer			firstLayer	= new Layer(2, 2, new HyperbolicTangent());
+	static Layer			secondLayer	= new Layer(2, 1, new HyperbolicTangent());
 	static List<float[]>	inputs		= new ArrayList<>();
 	static List<float[]>	targets		= new ArrayList<>();
 	static JPanel			panel		= new JPanel();
@@ -46,7 +46,8 @@ public class GraphicXor
 		{
 			for (int x = -150; x < 150; x++)
 			{
-				output	= runner.forward(new float[] { x, y });
+				output = runner.forward(new float[] { x, y });
+				Aid.normalizeOutput(output, -1, 1, 0, 1);
 				gray	= (int) (output[0] * 255);
 				p		= ((gray) << 16) | ((gray) << 8) | (gray);
 				bI.setRGB(150 + x, 150 - y, p);
@@ -78,6 +79,4 @@ public class GraphicXor
 		drawCartesianPoint(-1, 1, 255);
 		drawCartesianPoint(1, -1, 255);
 	}// end prepare
-	
-	
 }// end GraphicXor - class
