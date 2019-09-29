@@ -24,4 +24,14 @@ public abstract class Aid
 		s += " ]";
 		return s;
 	}// end getStringHorizontal
+	
+	public static void normalizeOutput(float[] output, float min, float max)
+	{
+		int i = 0;
+		while (i < output.length)
+		{
+			output[i] = (output[i] - min) / (max - min);
+			i++;
+		}// end while
+	}// end normalizeOutput
 }// end Aid - class

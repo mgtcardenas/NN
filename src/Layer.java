@@ -92,7 +92,6 @@ public class Layer
 		int i = 0;
 		while (i < neurons.length)
 		{
-			
 			int j = 0;
 			while (j < neurons[i].weights.length)
 			{

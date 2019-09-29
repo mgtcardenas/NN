@@ -1,14 +1,12 @@
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.*;
-
-public class Semirings
+public class GraphicXor
 {
-	static Layer			firstLayer	= new Layer(2, 10, new Sigmoid());
-	static Layer			secondLayer	= new Layer(10, 10, new Relu());
-	static Layer			thirdLayer	= new Layer(10, 1, new Sigmoid());
+	static Layer			firstLayer	= new Layer(2, 3, new Sigmoid());
+	static Layer			secondLayer	= new Layer(3, 1, new Sigmoid());
 	static List<float[]>	inputs		= new ArrayList<>();
 	static List<float[]>	targets		= new ArrayList<>();
 	static JPanel			panel		= new JPanel();
@@ -17,8 +15,7 @@ public class Semirings
 	
 	public static void main(String[] args)
 	{
-		prepare(-20, -10, 100, 0, 180, 255 << 16);
-		prepare(20, 10, 100, 180, 180, 255);
+		prepare();
 		
 		// Img
 		panel.add(new JLabel(new ImageIcon(bI)));
@@ -29,7 +26,7 @@ public class Semirings
 		
 		// NN
 		float	error	= Float.MAX_VALUE;
-		Runner	runner	= new Runner(inputs, targets, (int) (inputs.size() * 0.1), firstLayer, secondLayer, thirdLayer);
+		Runner	runner	= new Runner(inputs, targets, 4, firstLayer, secondLayer);
 		int		epoch	= 0;
 		while (error > 0.001)
 		{
@@ -56,37 +53,16 @@ public class Semirings
 			}// end for - x
 		}// end for - y
 		
-		redrawRings();
+		redrawDots();
 		panel.getComponent(0).repaint();
 		frame.setTitle("Epoch " + epoch + " - Error: " + error);
 	}// end evaluateNN
 	
-	// region Circles
-	private static void redrawRings()
+	private static void redrawDots()
 	{
 		for (int i = 0; i < inputs.size(); i++)
 			bI.setRGB(150 + (int) inputs.get(i)[0], 150 - (int) inputs.get(i)[1], targets.get(i)[0] != 0 ? 255 << 16 : 255);
 	}// end redrawPoints
-	
-	private static void prepare(int x, int y, int numPoints, int initialAngle, int angleMagnitude, int rgb)
-	{
-		int i = 0;
-		while (i < numPoints)
-		{
-			drawCircle(x, y, Math.random() * 10 + 30, initialAngle, angleMagnitude, rgb);
-			i++;
-		}// end while
-	}// end prepare
-	
-	private static void drawCircle(int x, int y, double r, int initialAngle, int angleMagnitude, int rgb)
-	{
-		double x1, y1, angle;
-		
-		angle	= Math.random() * angleMagnitude + initialAngle;
-		x1		= r * Math.cos(angle * Math.PI / 180);
-		y1		= r * Math.sin(angle * Math.PI / 180);
-		drawCartesianPoint((int) Math.round(x + x1), (int) Math.round(y + y1), rgb);
-	}// end drawCircle
 	
 	private static void drawCartesianPoint(int x, int y, int rgb)
 	{
@@ -94,5 +70,14 @@ public class Semirings
 		inputs.add(new float[] { x, y });
 		targets.add(new float[] { rgb == 255 ? 0 : 1 });
 	}// end drawCartesianPoint
-		// endregion Circles
-}// end Semirings - class
+	
+	private static void prepare()
+	{
+		drawCartesianPoint(-1, -1, 255 << 16);
+		drawCartesianPoint(1, 1, 255 << 16);
+		drawCartesianPoint(-1, 1, 255);
+		drawCartesianPoint(1, -1, 255);
+	}// end prepare
+	
+	
+}// end GraphicXor - class

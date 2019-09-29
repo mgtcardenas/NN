@@ -44,9 +44,9 @@ public class Circles
 		int		p, gray;
 		float[]	output;
 		
-		for (int y = -149; y < 150; y++) // Go through every one of the 300 by 300
+		for (int y = -149; y <= 150; y++) // Go through every one of the 300 by 300
 		{
-			for (int x = -149; x < 150; x++)
+			for (int x = -150; x < 150; x++)
 			{
 				output	= runner.forward(new float[] { x, y });
 				gray	= (int) (output[0] * 255);
